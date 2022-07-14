@@ -5,15 +5,18 @@ import 'package:notes/utils/app_drawer.dart';
 
 // ignore_for_file: prefer_const_constructors
 // ignore_for_file: prefer_const_literals_to_create_immutables
+// ignore_for_file: avoid_print
 
-class SignIn extends StatefulWidget {
-  const SignIn({Key? key}) : super(key: key);
+class Register extends StatefulWidget {
+  final VoidCallback? toggle;
+
+  const Register({this.toggle});
 
   @override
-  State<SignIn> createState() => _SignInState();
+  State<Register> createState() => _RegisterState();
 }
 
-class _SignInState extends State<SignIn> {
+class _RegisterState extends State<Register> {
   int _bottomBarIndex = 0;
   String _user = '';
   String _password = '';
@@ -65,7 +68,10 @@ class _SignInState extends State<SignIn> {
             padding: EdgeInsets.symmetric(
               horizontal: 10,
             ),
-            child: Icon(Icons.person),
+            child: IconButton(
+              icon: Icon(Icons.person),
+              onPressed: widget.toggle,
+            ),
           ),
         ],
       ),
@@ -73,7 +79,7 @@ class _SignInState extends State<SignIn> {
         margin: EdgeInsets.fromLTRB(15, 20, 15, 0),
         height: 300,
         decoration: BoxDecoration(
-          color: Colors.black,
+          color: Colors.black26,
           borderRadius: BorderRadius.circular(10),
         ),
         child: Padding(
@@ -115,7 +121,10 @@ class _SignInState extends State<SignIn> {
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(Colors.red),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  print(_user);
+                  print(_password);
+                },
                 child: Text(
                   'Register',
                 ),

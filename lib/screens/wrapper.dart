@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:notes/models/user_model.dart';
-import 'package:notes/screens/auth/signInAnon.dart';
-import 'package:notes/screens/auth/signin.dart';
+import 'package:notes/screens/auth/authenticate.dart';
 import 'package:notes/screens/home/homepage.dart';
 import 'package:provider/provider.dart';
 
@@ -19,6 +18,6 @@ class Wrapper extends StatelessWidget {
     final user = Provider.of<MyUser?>(context);
     print(user);
 
-    return user != null ? HomePage() : SignIn();
+    return user != null ? HomePage() : Authenticate();
   }
 }

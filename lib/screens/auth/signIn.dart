@@ -9,7 +9,9 @@ import 'package:notes/utils/app_drawer.dart';
 // ignore_for_file: unused_field
 
 class SignIn extends StatefulWidget {
-  const SignIn({Key? key}) : super(key: key);
+  final VoidCallback? toggle;
+
+  const SignIn({this.toggle});
 
   @override
   State<SignIn> createState() => _SignInState();
@@ -17,7 +19,7 @@ class SignIn extends StatefulWidget {
 
 class _SignInState extends State<SignIn> {
   //sigin widget with email and password
-
+  int _bottomBarIndex = 0;
   String _user = '';
   String _password = '';
 
@@ -68,7 +70,12 @@ class _SignInState extends State<SignIn> {
             padding: EdgeInsets.symmetric(
               horizontal: 10,
             ),
-            child: Icon(Icons.person),
+            child: IconButton(
+              icon: Icon(
+                Icons.person,
+              ),
+              onPressed: widget.toggle,
+            ),
           ),
         ],
       ),
@@ -118,9 +125,8 @@ class _SignInState extends State<SignIn> {
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(Colors.red),
                 ),
-                onPressed: () {
-                  print(_user);
-                  print(_password);
+                onPressed: () async {
+                  await _auth.signin();
                 },
                 child: Text(
                   'Sign-In',
@@ -129,6 +135,34 @@ class _SignInState extends State<SignIn> {
             ],
           ),
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        selectedIconTheme: IconThemeData(
+          color: Colors.red,
+          size: 30,
+        ),
+        selectedItemColor: Colors.red,
+        currentIndex: _bottomBarIndex,
+        onTap: (index) {
+          setState(() {
+            _bottomBarIndex = index;
+          });
+          //print(index);
+        },
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite),
+            label: 'Favourite',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Settings',
+          ),
+        ],
       ),
     );
   }
