@@ -23,6 +23,7 @@ class _SignInState extends State<SignIn> {
   String _user = '';
   String _password = '';
 
+  final _key = GlobalKey<FormState>();
   final AuthService _auth = AuthService();
 
   @override
@@ -81,58 +82,69 @@ class _SignInState extends State<SignIn> {
       ),
       body: Container(
         margin: EdgeInsets.fromLTRB(15, 20, 15, 0),
-        height: 300,
+        height: 350,
         decoration: BoxDecoration(
           color: Colors.black26,
           borderRadius: BorderRadius.circular(10),
         ),
-        child: Padding(
-          padding: EdgeInsets.all(15),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              TextFormField(
-                cursorColor: Colors.red,
-                decoration: InputDecoration(
-                  hintText: 'Username',
+        child: Form(
+          key: _key,
+          child: Padding(
+            padding: EdgeInsets.all(15),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                TextFormField(
+                  validator: (val) =>
+                      val!.isEmpty ? 'Email cannot be empty' : null,
+                  cursorColor: Colors.red,
+                  decoration: InputDecoration(
+                    hintText: 'Username',
+                  ),
+                  style: GoogleFonts.acme(
+                    letterSpacing: 1,
+                  ),
+                  onChanged: (value) {
+                    _user = value;
+                  },
                 ),
-                style: GoogleFonts.acme(
-                  letterSpacing: 1,
+                SizedBox(
+                  height: 50,
                 ),
-                onChanged: (value) {
-                  _user = value;
-                },
-              ),
-              SizedBox(
-                height: 50,
-              ),
-              TextFormField(
-                decoration: InputDecoration(
-                  hintText: 'Password',
+                TextFormField(
+                  validator: (val) => val!.length < 6
+                      ? 'Password must be 6 or more char long'
+                      : null,
+                  decoration: InputDecoration(
+                    hintText: 'Password',
+                  ),
+                  style: GoogleFonts.acme(
+                    letterSpacing: 1,
+                  ),
+                  obscureText: true,
+                  onChanged: (value) {
+                    _password = value;
+                  },
                 ),
-                style: GoogleFonts.acme(
-                  letterSpacing: 1,
+                SizedBox(
+                  height: 50,
                 ),
-                obscureText: true,
-                onChanged: (value) {
-                  _password = value;
-                },
-              ),
-              SizedBox(
-                height: 50,
-              ),
-              ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.red),
+                ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.red),
+                  ),
+                  onPressed: () async {
+                    if (_key.currentState!.validate()) {
+                      print(_user);
+                      print(_password);
+                    }
+                  },
+                  child: Text(
+                    'Sign-In',
+                  ),
                 ),
-                onPressed: () async {
-                  await _auth.signin();
-                },
-                child: Text(
-                  'Sign-In',
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
