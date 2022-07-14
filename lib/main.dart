@@ -8,7 +8,10 @@ import 'package:provider/provider.dart';
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
 void main() async {
+  //initialize the bindings in flutter (low level process)
   WidgetsFlutterBinding.ensureInitialized();
+
+  //Initialize the firebase app
   await Firebase.initializeApp();
   runApp(const MyApp());
 }

@@ -9,6 +9,8 @@ import 'package:provider/provider.dart';
 // ignore_for_file: prefer_const_literals_to_create_immutables
 // ignore_for_file: avoid_print
 
+//Wrapper is the custom selector widget , which selects between homepage and sign in page
+
 class Wrapper extends StatelessWidget {
   const Wrapper({Key? key}) : super(key: key);
 

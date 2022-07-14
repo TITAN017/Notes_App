@@ -16,6 +16,8 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
+  //sigin widget with email and password
+
   String _user = '';
   String _password = '';
 
