@@ -18,9 +18,11 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   int _bottomBarIndex = 0;
-  String _user = '';
-  String _password = '';
+  String user = '';
+  String password = '';
+  String error = '';
 
+  final _key = GlobalKey<FormState>();
   final AuthService _auth = AuthService();
 
   @override
@@ -75,65 +77,93 @@ class _RegisterState extends State<Register> {
           ),
         ],
       ),
-      body: Container(
-        margin: EdgeInsets.fromLTRB(15, 20, 15, 0),
-        height: 350,
-        decoration: BoxDecoration(
-          color: Colors.black26,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Form(
-          child: Padding(
-            padding: EdgeInsets.all(15),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                TextFormField(
-                  cursorColor: Colors.red,
-                  decoration: InputDecoration(
-                    hintText: 'Username',
-                  ),
-                  style: GoogleFonts.acme(
-                    letterSpacing: 1,
-                  ),
-                  onChanged: (value) {
-                    _user = value;
-                  },
+      body: Column(
+        children: [
+          Container(
+            margin: EdgeInsets.fromLTRB(15, 20, 15, 0),
+            height: 350,
+            decoration: BoxDecoration(
+              color: Colors.black26,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Form(
+              key: _key,
+              child: Padding(
+                padding: EdgeInsets.all(15),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    TextFormField(
+                      validator: (val) =>
+                          val!.isEmpty ? 'Email cannot be empty' : null,
+                      cursorColor: Colors.red,
+                      decoration: InputDecoration(
+                        hintText: 'Username',
+                      ),
+                      style: GoogleFonts.acme(
+                        letterSpacing: 1,
+                      ),
+                      onChanged: (value) {
+                        user = value;
+                      },
+                    ),
+                    SizedBox(
+                      height: 50,
+                    ),
+                    TextFormField(
+                      validator: (val) => val!.length < 6
+                          ? 'Password must be 6 or more char long'
+                          : null,
+                      decoration: InputDecoration(
+                        hintText: 'Password',
+                      ),
+                      style: GoogleFonts.acme(
+                        letterSpacing: 1,
+                      ),
+                      obscureText: true,
+                      onChanged: (value) {
+                        password = value;
+                      },
+                    ),
+                    SizedBox(
+                      height: 50,
+                    ),
+                    ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Colors.red),
+                      ),
+                      onPressed: () async {
+                        if (_key.currentState!.validate()) {
+                          print(user + password);
+                          dynamic result = await _auth.register(user, password);
+                          if (result == null) {
+                            setState(() {
+                              error = 'Error Occured';
+                            });
+                          } else {
+                            setState(() {
+                              error = '';
+                            });
+                          }
+                        }
+                      },
+                      child: Text(
+                        'Register',
+                      ),
+                    ),
+                  ],
                 ),
-                SizedBox(
-                  height: 50,
-                ),
-                TextFormField(
-                  decoration: InputDecoration(
-                    hintText: 'Password',
-                  ),
-                  style: GoogleFonts.acme(
-                    letterSpacing: 1,
-                  ),
-                  obscureText: true,
-                  onChanged: (value) {
-                    _user = value;
-                  },
-                ),
-                SizedBox(
-                  height: 50,
-                ),
-                ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.red),
-                  ),
-                  onPressed: () {
-                    print(_user);
-                    print(_password);
-                  },
-                  child: Text(
-                    'Register',
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
-        ),
+          SizedBox(
+            height: 20,
+          ),
+          Text(
+            error,
+            style: GoogleFonts.acme(color: Colors.red),
+          ),
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         selectedIconTheme: IconThemeData(

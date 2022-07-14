@@ -135,8 +135,7 @@ class _SignInState extends State<SignIn> {
                   ),
                   onPressed: () async {
                     if (_key.currentState!.validate()) {
-                      print(_user);
-                      print(_password);
+                      dynamic result = await _auth.signin();
                     }
                   },
                   child: Text(
