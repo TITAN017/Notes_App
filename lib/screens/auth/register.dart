@@ -5,19 +5,24 @@ import 'package:notes/utils/app_drawer.dart';
 
 // ignore_for_file: prefer_const_constructors
 // ignore_for_file: prefer_const_literals_to_create_immutables
+// ignore_for_file: avoid_print
 
-class SignIn extends StatefulWidget {
-  const SignIn({Key? key}) : super(key: key);
+class Register extends StatefulWidget {
+  final VoidCallback? toggle;
+
+  const Register({this.toggle});
 
   @override
-  State<SignIn> createState() => _SignInState();
+  State<Register> createState() => _RegisterState();
 }
 
-class _SignInState extends State<SignIn> {
+class _RegisterState extends State<Register> {
   int _bottomBarIndex = 0;
-  String _user = '';
-  String _password = '';
+  String user = '';
+  String password = '';
+  String error = '';
 
+  final _key = GlobalKey<FormState>();
   final AuthService _auth = AuthService();
 
   @override
@@ -65,63 +70,103 @@ class _SignInState extends State<SignIn> {
             padding: EdgeInsets.symmetric(
               horizontal: 10,
             ),
-            child: Icon(Icons.person),
+            child: IconButton(
+              icon: Icon(Icons.person),
+              onPressed: widget.toggle,
+            ),
           ),
         ],
       ),
-      body: Container(
-        margin: EdgeInsets.fromLTRB(15, 20, 15, 0),
-        height: 300,
-        decoration: BoxDecoration(
-          color: Colors.black,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Padding(
-          padding: EdgeInsets.all(15),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              TextFormField(
-                cursorColor: Colors.red,
-                decoration: InputDecoration(
-                  hintText: 'Username',
-                ),
-                style: GoogleFonts.acme(
-                  letterSpacing: 1,
-                ),
-                onChanged: (value) {
-                  _user = value;
-                },
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              margin: EdgeInsets.fromLTRB(15, 20, 15, 0),
+              height: 350,
+              decoration: BoxDecoration(
+                color: Colors.black26,
+                borderRadius: BorderRadius.circular(10),
               ),
-              SizedBox(
-                height: 50,
-              ),
-              TextFormField(
-                decoration: InputDecoration(
-                  hintText: 'Password',
+              child: Form(
+                key: _key,
+                child: Padding(
+                  padding: EdgeInsets.all(15),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      TextFormField(
+                        validator: (val) =>
+                            val!.isEmpty ? 'Email cannot be empty' : null,
+                        cursorColor: Colors.red,
+                        decoration: InputDecoration(
+                          hintText: 'Username',
+                        ),
+                        style: GoogleFonts.acme(
+                          letterSpacing: 1,
+                        ),
+                        onChanged: (value) {
+                          user = value;
+                        },
+                      ),
+                      SizedBox(
+                        height: 50,
+                      ),
+                      TextFormField(
+                        validator: (val) => val!.length < 6
+                            ? 'Password must be 6 or more char long'
+                            : null,
+                        decoration: InputDecoration(
+                          hintText: 'Password',
+                        ),
+                        style: GoogleFonts.acme(
+                          letterSpacing: 1,
+                        ),
+                        obscureText: true,
+                        onChanged: (value) {
+                          password = value;
+                        },
+                      ),
+                      SizedBox(
+                        height: 50,
+                      ),
+                      ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.red),
+                        ),
+                        onPressed: () async {
+                          if (_key.currentState!.validate()) {
+                            print(user + password);
+                            dynamic result =
+                                await _auth.register(user, password);
+                            if (result == null) {
+                              setState(() {
+                                error = 'Error Occured';
+                              });
+                            } else {
+                              setState(() {
+                                error = '';
+                              });
+                            }
+                          }
+                        },
+                        child: Text(
+                          'Register',
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                style: GoogleFonts.acme(
-                  letterSpacing: 1,
-                ),
-                obscureText: true,
-                onChanged: (value) {
-                  _user = value;
-                },
               ),
-              SizedBox(
-                height: 50,
-              ),
-              ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.red),
-                ),
-                onPressed: () {},
-                child: Text(
-                  'Register',
-                ),
-              ),
-            ],
-          ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              error,
+              style: GoogleFonts.acme(color: Colors.red),
+            ),
+          ],
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(

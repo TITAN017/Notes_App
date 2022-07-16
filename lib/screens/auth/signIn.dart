@@ -9,16 +9,22 @@ import 'package:notes/utils/app_drawer.dart';
 // ignore_for_file: unused_field
 
 class SignIn extends StatefulWidget {
-  const SignIn({Key? key}) : super(key: key);
+  final VoidCallback? toggle;
+
+  const SignIn({this.toggle});
 
   @override
   State<SignIn> createState() => _SignInState();
 }
 
 class _SignInState extends State<SignIn> {
+  //sigin widget with email and password
+  int _bottomBarIndex = 0;
   String _user = '';
   String _password = '';
+  String error = '';
 
+  final _key = GlobalKey<FormState>();
   final AuthService _auth = AuthService();
 
   @override
@@ -66,67 +72,131 @@ class _SignInState extends State<SignIn> {
             padding: EdgeInsets.symmetric(
               horizontal: 10,
             ),
-            child: Icon(Icons.person),
+            child: IconButton(
+              icon: Icon(
+                Icons.person,
+              ),
+              onPressed: widget.toggle,
+            ),
           ),
         ],
       ),
-      body: Container(
-        margin: EdgeInsets.fromLTRB(15, 20, 15, 0),
-        height: 300,
-        decoration: BoxDecoration(
-          color: Colors.black26,
-          borderRadius: BorderRadius.circular(10),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              margin: EdgeInsets.fromLTRB(15, 20, 15, 0),
+              height: 350,
+              decoration: BoxDecoration(
+                color: Colors.black26,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Form(
+                key: _key,
+                child: Padding(
+                  padding: EdgeInsets.all(15),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      TextFormField(
+                        validator: (val) =>
+                            val!.isEmpty ? 'Email cannot be empty' : null,
+                        cursorColor: Colors.red,
+                        decoration: InputDecoration(
+                          hintText: 'Username',
+                        ),
+                        style: GoogleFonts.acme(
+                          letterSpacing: 1,
+                        ),
+                        onChanged: (value) {
+                          _user = value;
+                        },
+                      ),
+                      SizedBox(
+                        height: 50,
+                      ),
+                      TextFormField(
+                        validator: (val) => val!.length < 6
+                            ? 'Password must be 6 or more char long'
+                            : null,
+                        decoration: InputDecoration(
+                          hintText: 'Password',
+                        ),
+                        style: GoogleFonts.acme(
+                          letterSpacing: 1,
+                        ),
+                        obscureText: true,
+                        onChanged: (value) {
+                          _password = value;
+                        },
+                      ),
+                      SizedBox(
+                        height: 50,
+                      ),
+                      ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.red),
+                        ),
+                        onPressed: () async {
+                          if (_key.currentState!.validate()) {
+                            dynamic result =
+                                await _auth.signin(_user, _password);
+                            if (result == null) {
+                              setState(() {
+                                error = "Error Occured";
+                              });
+                            }
+                          }
+                        },
+                        child: Text(
+                          'Sign-In',
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              error,
+              style: GoogleFonts.acme(
+                color: Colors.red,
+              ),
+            ),
+          ],
         ),
-        child: Padding(
-          padding: EdgeInsets.all(15),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              TextFormField(
-                cursorColor: Colors.red,
-                decoration: InputDecoration(
-                  hintText: 'Username',
-                ),
-                style: GoogleFonts.acme(
-                  letterSpacing: 1,
-                ),
-                onChanged: (value) {
-                  _user = value;
-                },
-              ),
-              SizedBox(
-                height: 50,
-              ),
-              TextFormField(
-                decoration: InputDecoration(
-                  hintText: 'Password',
-                ),
-                style: GoogleFonts.acme(
-                  letterSpacing: 1,
-                ),
-                obscureText: true,
-                onChanged: (value) {
-                  _password = value;
-                },
-              ),
-              SizedBox(
-                height: 50,
-              ),
-              ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.red),
-                ),
-                onPressed: () {
-                  print(_user);
-                  print(_password);
-                },
-                child: Text(
-                  'Sign-In',
-                ),
-              ),
-            ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        selectedIconTheme: IconThemeData(
+          color: Colors.red,
+          size: 30,
+        ),
+        selectedItemColor: Colors.red,
+        currentIndex: _bottomBarIndex,
+        onTap: (index) {
+          setState(() {
+            _bottomBarIndex = index;
+          });
+          //print(index);
+        },
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
           ),
-        ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite),
+            label: 'Favourite',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Settings',
+          ),
+        ],
       ),
     );
   }

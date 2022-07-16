@@ -2,6 +2,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:notes/services/auth.dart';
 import 'package:notes/utils/app_drawer.dart';
 import 'package:notes/utils/note_card.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -14,6 +15,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final AuthService _auth = AuthService();
   int _bottomBarIndex = 0;
 
   @override
@@ -41,6 +43,9 @@ class _HomePageState extends State<HomePage> {
                 color: Colors.green,
               ),
             ),
+            SizedBox(
+              width: 5,
+            ),
             Icon(Icons.android),
             SizedBox(
               width: 5,
@@ -53,8 +58,10 @@ class _HomePageState extends State<HomePage> {
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.sort),
-            onPressed: () {},
+            icon: Icon(Icons.logout),
+            onPressed: () {
+              _auth.signout();
+            },
           ),
         ],
       ),
