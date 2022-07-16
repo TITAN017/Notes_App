@@ -22,6 +22,7 @@ class _SignInState extends State<SignIn> {
   int _bottomBarIndex = 0;
   String _user = '';
   String _password = '';
+  String error = '';
 
   final _key = GlobalKey<FormState>();
   final AuthService _auth = AuthService();
@@ -80,71 +81,93 @@ class _SignInState extends State<SignIn> {
           ),
         ],
       ),
-      body: Container(
-        margin: EdgeInsets.fromLTRB(15, 20, 15, 0),
-        height: 350,
-        decoration: BoxDecoration(
-          color: Colors.black26,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Form(
-          key: _key,
-          child: Padding(
-            padding: EdgeInsets.all(15),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                TextFormField(
-                  validator: (val) =>
-                      val!.isEmpty ? 'Email cannot be empty' : null,
-                  cursorColor: Colors.red,
-                  decoration: InputDecoration(
-                    hintText: 'Username',
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              margin: EdgeInsets.fromLTRB(15, 20, 15, 0),
+              height: 350,
+              decoration: BoxDecoration(
+                color: Colors.black26,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Form(
+                key: _key,
+                child: Padding(
+                  padding: EdgeInsets.all(15),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      TextFormField(
+                        validator: (val) =>
+                            val!.isEmpty ? 'Email cannot be empty' : null,
+                        cursorColor: Colors.red,
+                        decoration: InputDecoration(
+                          hintText: 'Username',
+                        ),
+                        style: GoogleFonts.acme(
+                          letterSpacing: 1,
+                        ),
+                        onChanged: (value) {
+                          _user = value;
+                        },
+                      ),
+                      SizedBox(
+                        height: 50,
+                      ),
+                      TextFormField(
+                        validator: (val) => val!.length < 6
+                            ? 'Password must be 6 or more char long'
+                            : null,
+                        decoration: InputDecoration(
+                          hintText: 'Password',
+                        ),
+                        style: GoogleFonts.acme(
+                          letterSpacing: 1,
+                        ),
+                        obscureText: true,
+                        onChanged: (value) {
+                          _password = value;
+                        },
+                      ),
+                      SizedBox(
+                        height: 50,
+                      ),
+                      ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.red),
+                        ),
+                        onPressed: () async {
+                          if (_key.currentState!.validate()) {
+                            dynamic result =
+                                await _auth.signin(_user, _password);
+                            if (result == null) {
+                              setState(() {
+                                error = "Error Occured";
+                              });
+                            }
+                          }
+                        },
+                        child: Text(
+                          'Sign-In',
+                        ),
+                      ),
+                    ],
                   ),
-                  style: GoogleFonts.acme(
-                    letterSpacing: 1,
-                  ),
-                  onChanged: (value) {
-                    _user = value;
-                  },
                 ),
-                SizedBox(
-                  height: 50,
-                ),
-                TextFormField(
-                  validator: (val) => val!.length < 6
-                      ? 'Password must be 6 or more char long'
-                      : null,
-                  decoration: InputDecoration(
-                    hintText: 'Password',
-                  ),
-                  style: GoogleFonts.acme(
-                    letterSpacing: 1,
-                  ),
-                  obscureText: true,
-                  onChanged: (value) {
-                    _password = value;
-                  },
-                ),
-                SizedBox(
-                  height: 50,
-                ),
-                ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.red),
-                  ),
-                  onPressed: () async {
-                    if (_key.currentState!.validate()) {
-                      dynamic result = await _auth.signin();
-                    }
-                  },
-                  child: Text(
-                    'Sign-In',
-                  ),
-                ),
-              ],
+              ),
             ),
-          ),
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              error,
+              style: GoogleFonts.acme(
+                color: Colors.red,
+              ),
+            ),
+          ],
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(

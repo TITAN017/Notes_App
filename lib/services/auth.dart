@@ -49,13 +49,14 @@ class AuthService {
 
   //sign in email/password
 
-  Future signin() async {
+  Future signin(String user, String pass) async {
     try {
-      UserCredential result = await _auth.signInWithEmailAndPassword(
-          email: 'hello@gmail.com', password: 'hellow');
+      UserCredential result =
+          await _auth.signInWithEmailAndPassword(email: user, password: pass);
       User? _userCred = result.user;
       return _convert(_userCred);
     } catch (e) {
+      print(e.toString());
       return null;
     }
   }

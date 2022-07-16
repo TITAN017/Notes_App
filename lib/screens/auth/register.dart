@@ -77,93 +77,97 @@ class _RegisterState extends State<Register> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          Container(
-            margin: EdgeInsets.fromLTRB(15, 20, 15, 0),
-            height: 350,
-            decoration: BoxDecoration(
-              color: Colors.black26,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Form(
-              key: _key,
-              child: Padding(
-                padding: EdgeInsets.all(15),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    TextFormField(
-                      validator: (val) =>
-                          val!.isEmpty ? 'Email cannot be empty' : null,
-                      cursorColor: Colors.red,
-                      decoration: InputDecoration(
-                        hintText: 'Username',
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              margin: EdgeInsets.fromLTRB(15, 20, 15, 0),
+              height: 350,
+              decoration: BoxDecoration(
+                color: Colors.black26,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Form(
+                key: _key,
+                child: Padding(
+                  padding: EdgeInsets.all(15),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      TextFormField(
+                        validator: (val) =>
+                            val!.isEmpty ? 'Email cannot be empty' : null,
+                        cursorColor: Colors.red,
+                        decoration: InputDecoration(
+                          hintText: 'Username',
+                        ),
+                        style: GoogleFonts.acme(
+                          letterSpacing: 1,
+                        ),
+                        onChanged: (value) {
+                          user = value;
+                        },
                       ),
-                      style: GoogleFonts.acme(
-                        letterSpacing: 1,
+                      SizedBox(
+                        height: 50,
                       ),
-                      onChanged: (value) {
-                        user = value;
-                      },
-                    ),
-                    SizedBox(
-                      height: 50,
-                    ),
-                    TextFormField(
-                      validator: (val) => val!.length < 6
-                          ? 'Password must be 6 or more char long'
-                          : null,
-                      decoration: InputDecoration(
-                        hintText: 'Password',
+                      TextFormField(
+                        validator: (val) => val!.length < 6
+                            ? 'Password must be 6 or more char long'
+                            : null,
+                        decoration: InputDecoration(
+                          hintText: 'Password',
+                        ),
+                        style: GoogleFonts.acme(
+                          letterSpacing: 1,
+                        ),
+                        obscureText: true,
+                        onChanged: (value) {
+                          password = value;
+                        },
                       ),
-                      style: GoogleFonts.acme(
-                        letterSpacing: 1,
+                      SizedBox(
+                        height: 50,
                       ),
-                      obscureText: true,
-                      onChanged: (value) {
-                        password = value;
-                      },
-                    ),
-                    SizedBox(
-                      height: 50,
-                    ),
-                    ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(Colors.red),
-                      ),
-                      onPressed: () async {
-                        if (_key.currentState!.validate()) {
-                          print(user + password);
-                          dynamic result = await _auth.register(user, password);
-                          if (result == null) {
-                            setState(() {
-                              error = 'Error Occured';
-                            });
-                          } else {
-                            setState(() {
-                              error = '';
-                            });
+                      ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.red),
+                        ),
+                        onPressed: () async {
+                          if (_key.currentState!.validate()) {
+                            print(user + password);
+                            dynamic result =
+                                await _auth.register(user, password);
+                            if (result == null) {
+                              setState(() {
+                                error = 'Error Occured';
+                              });
+                            } else {
+                              setState(() {
+                                error = '';
+                              });
+                            }
                           }
-                        }
-                      },
-                      child: Text(
-                        'Register',
+                        },
+                        child: Text(
+                          'Register',
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Text(
-            error,
-            style: GoogleFonts.acme(color: Colors.red),
-          ),
-        ],
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              error,
+              style: GoogleFonts.acme(color: Colors.red),
+            ),
+          ],
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         selectedIconTheme: IconThemeData(
