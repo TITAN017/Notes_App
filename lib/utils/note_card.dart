@@ -6,10 +6,12 @@ import 'package:google_fonts/google_fonts.dart';
 // ignore_for_file: use_key_in_widget_constructors
 
 class NoteCard extends StatelessWidget {
-  final Color _cardColor;
-  final String _content;
+  final int cardColor;
+  final String info;
 
-  const NoteCard(this._cardColor, this._content);
+  NoteCard({required this.cardColor, required this.info});
+
+  Map colors = {1: Colors.purple, 2: Colors.orange, 3: Colors.red};
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +22,7 @@ class NoteCard extends StatelessWidget {
         vertical: 10,
       ),
       decoration: BoxDecoration(
-        color: _cardColor,
+        color: colors[cardColor],
         borderRadius: BorderRadius.circular(10),
       ),
       child: Row(
@@ -32,7 +34,7 @@ class NoteCard extends StatelessWidget {
               horizontal: 15.0,
             ),
             child: Text(
-              _content,
+              info,
               style: GoogleFonts.acme(
                 color: Colors.white,
                 fontSize: 20,
@@ -43,7 +45,7 @@ class NoteCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               IconButton(
-                splashColor: _cardColor,
+                splashColor: colors[cardColor],
                 color: Colors.black,
                 onPressed: () {},
                 icon: Icon(Icons.close),
