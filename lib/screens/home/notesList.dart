@@ -14,14 +14,18 @@ class NotesList extends StatefulWidget {
 class _NotesListState extends State<NotesList> {
   @override
   Widget build(BuildContext context) {
-    final notes = Provider.of<List<Notes>>(context);
+    final notes = Provider.of<List<Notes>?>(context);
 
-    return ListView.builder(
-      itemCount: notes.length,
-      itemBuilder: (context, index) {
-        var current = notes[index];
-        return NoteCard(cardColor: current.priority!, info: current.info!);
-      },
-    );
+    if (notes != null) {
+      return ListView.builder(
+        itemCount: notes.length,
+        itemBuilder: (context, index) {
+          var current = notes[index];
+          return NoteCard(cardColor: current.priority, info: current.info);
+        },
+      );
+    } else {
+      return Container();
+    }
   }
 }
