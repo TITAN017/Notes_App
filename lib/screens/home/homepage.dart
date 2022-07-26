@@ -4,6 +4,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:notes/models/notes.dart';
+import 'package:notes/screens/home/actions.dart';
 import 'package:notes/screens/home/notesList.dart';
 import 'package:notes/services/auth.dart';
 import 'package:notes/services/database.dart';
@@ -13,7 +14,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  final String uid;
+  HomePage({required this.uid});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -25,8 +27,11 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final Database db = Database(uid: widget.uid);
+    final Act act = Act();
+
     return StreamProvider<List<Notes>?>.value(
-      value: Database().notes,
+      value: db.userNotes,
       initialData: null,
       child: Scaffold(
         appBar: AppBar(
@@ -91,13 +96,15 @@ class _HomePageState extends State<HomePage> {
         ),*/
             NotesList(),
         floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.blue,
+          backgroundColor: Colors.yellow,
           elevation: 0,
           child: Text(
             '+',
             style: TextStyle(fontSize: 25),
           ),
-          onPressed: () {},
+          onPressed: () {
+            act.showdisplay(context, db.add);
+          },
         ),
         bottomNavigationBar: BottomNavigationBar(
           selectedIconTheme: IconThemeData(

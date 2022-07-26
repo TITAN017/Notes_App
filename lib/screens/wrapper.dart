@@ -18,6 +18,6 @@ class Wrapper extends StatelessWidget {
     final user = Provider.of<MyUser?>(context);
     print(user);
 
-    return user != null ? HomePage() : Authenticate();
+    return user != null ? HomePage(uid: user.uid!) : Authenticate();
   }
 }

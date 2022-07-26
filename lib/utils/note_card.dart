@@ -8,10 +8,16 @@ import 'package:google_fonts/google_fonts.dart';
 class NoteCard extends StatelessWidget {
   final int cardColor;
   final String info;
+  final String id;
+  final Function del;
 
-  NoteCard({required this.cardColor, required this.info});
+  NoteCard(
+      {required this.cardColor,
+      required this.info,
+      required this.id,
+      required this.del});
 
-  Map colors = {1: Colors.purple, 2: Colors.orange, 3: Colors.red};
+  Map colors = {1: Colors.red, 2: Colors.orange, 3: Colors.green};
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +53,9 @@ class NoteCard extends StatelessWidget {
               IconButton(
                 splashColor: colors[cardColor],
                 color: Colors.black,
-                onPressed: () {},
+                onPressed: () async {
+                  await del(id);
+                },
                 icon: Icon(Icons.close),
               ),
             ],
