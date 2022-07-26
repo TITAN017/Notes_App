@@ -31,6 +31,7 @@ class _NotesListState extends State<NotesList> {
             info: current.info,
             id: current.id,
             del: db.delete,
+            mod: db.modify,
           );
         },
       );

@@ -103,7 +103,7 @@ class _HomePageState extends State<HomePage> {
             style: TextStyle(fontSize: 25),
           ),
           onPressed: () {
-            act.showdisplay(context, db.add);
+            act.showdisplay(context, db.add, 'Add', null);
           },
         ),
         bottomNavigationBar: BottomNavigationBar(

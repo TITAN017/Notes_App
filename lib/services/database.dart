@@ -75,4 +75,19 @@ class Database {
       },
     );
   }
+
+  Future modify(String docid, String info, int priority) async {
+    try {
+      return await subref.doc(docid).set(
+        {
+          'info': info,
+          'priority': priority,
+        },
+      );
+    } catch (e) {
+      print("Error occured : modify");
+      print(e.toString());
+      return null;
+    }
+  }
 }

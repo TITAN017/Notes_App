@@ -17,7 +17,8 @@ class Act {
     }
   }
 
-  void showdisplay(BuildContext context, Function add) {
+  void showdisplay(
+      BuildContext context, Function action, String actionType, String? id) {
     final key = GlobalKey<FormState>();
     showDialog(
       context: context,
@@ -25,7 +26,7 @@ class Act {
         return AlertDialog(
           scrollable: true,
           title: Text(
-            'Add Note',
+            actionType == 'Add' ? 'Add Note' : 'Modify',
             style: GoogleFonts.acme(letterSpacing: 1),
           ),
           content: Container(
@@ -76,7 +77,7 @@ class Act {
             Center(
               child: ElevatedButton(
                 child: Text(
-                  "Add",
+                  actionType == 'Add' ? 'Add' : 'Modify',
                   style: GoogleFonts.acme(
                     letterSpacing: 1,
                   ),
@@ -87,10 +88,16 @@ class Act {
                 onPressed: () async {
                   if (key.currentState!.validate()) {
                     Navigator.pop(context);
-                    await add(
-                      note,
-                      int.parse(priority),
-                    );
+                    actionType == 'Add'
+                        ? await action(
+                            note,
+                            int.parse(priority),
+                          )
+                        : await action(
+                            id,
+                            note,
+                            int.parse(priority),
+                          );
                   }
                 },
               ),
