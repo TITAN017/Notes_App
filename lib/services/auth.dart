@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:notes/models/user_model.dart';
+import 'package:notes/services/database.dart';
 
 // ignore_for_file: prefer_const_constructors
 // ignore_for_file: prefer_const_literals_to_create_immutables
@@ -40,6 +41,9 @@ class AuthService {
       UserCredential _result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       User? user = _result.user;
+
+      //Create a new document for the new user
+      await Database(uid: user!.uid).update('Homework', 1);
       return _convert(user);
     } catch (e) {
       print("error register");
