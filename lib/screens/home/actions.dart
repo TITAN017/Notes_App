@@ -5,19 +5,15 @@ class Act {
   String note = '';
   String priority = '0';
 
-  bool checkRange(String val) {
-    print("Entering func");
-    try {
+  dynamic checkRange(String val) {
+    if (val.isEmpty) {
+      return "Priority field is Null";
+    } else {
       if (int.parse(val) > 3 || int.parse(val) < 1) {
-        print("Entering func true");
-        return true;
+        return "Priority should lie in (1-3)";
+      } else {
+        return null;
       }
-      print("Entering func false 1");
-      return false;
-    } catch (e) {
-      print("Entering func false 2");
-      print(e.toString());
-      return false;
     }
   }
 
@@ -57,9 +53,9 @@ class Act {
                     height: 50,
                   ),
                   TextFormField(
-                    validator: (val) => checkRange(val ?? '0')
-                        ? 'Priority should lie between (1-3)'
-                        : null,
+                    validator: (val) {
+                      return checkRange(val!);
+                    },
                     decoration: const InputDecoration(
                       hintText: 'Priority',
                     ),
