@@ -43,7 +43,7 @@ class AuthService {
       User? user = _result.user;
 
       //Create a new document for the new user
-      await Database(uid: user!.uid).update('Homework', 1);
+      await Database(uid: user!.uid).update('Hello User', 1);
       return _convert(user);
     } catch (e) {
       print("error register");

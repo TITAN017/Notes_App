@@ -67,13 +67,19 @@ class Database {
 
   //Update the data present
   Future update(String info, int priority) async {
-    await ref.doc(uid).set({'uid': uid});
-    return await subref.doc().set(
-      {
-        'info': info,
-        'priority': priority,
-      },
-    );
+    try {
+      await ref.doc(uid).set({'uid': uid});
+      return await subref.doc().set(
+        {
+          'info': info,
+          'priority': priority,
+        },
+      );
+    } catch (e) {
+      print("Error occured : update");
+      print(e.toString());
+      return null;
+    }
   }
 
   Future modify(String docid, String info, int priority) async {

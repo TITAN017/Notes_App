@@ -13,7 +13,7 @@ class NoteCard extends StatelessWidget {
   final Function del;
   final Function mod;
 
-  NoteCard({
+  const NoteCard({
     required this.cardColor,
     required this.info,
     required this.id,
@@ -21,7 +21,7 @@ class NoteCard extends StatelessWidget {
     required this.mod,
   });
 
-  Map colors = {1: Colors.red, 2: Colors.orange, 3: Colors.green};
+  static const Map colors = {1: Colors.red, 2: Colors.orange, 3: Colors.green};
 
   @override
   Widget build(BuildContext context) {
