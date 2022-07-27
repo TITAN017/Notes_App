@@ -10,15 +10,19 @@ class NoteCard extends StatelessWidget {
   final int cardColor;
   final String info;
   final String id;
+  final bool fav;
   final Function del;
   final Function mod;
+  final Function changeFav;
 
   const NoteCard({
     required this.cardColor,
     required this.info,
+    required this.fav,
     required this.id,
     required this.del,
     required this.mod,
+    required this.changeFav,
   });
 
   static const Map colors = {1: Colors.red, 2: Colors.orange, 3: Colors.green};
@@ -63,6 +67,19 @@ class NoteCard extends StatelessWidget {
                   act.showdisplay(context, mod, 'Modify', id);
                 },
                 icon: Icon(Icons.edit),
+              ),
+              IconButton(
+                splashColor: colors[cardColor],
+                color: Colors.black,
+                onPressed: () async {
+                  await changeFav(id, !fav);
+                },
+                icon: fav
+                    ? Icon(
+                        Icons.favorite,
+                        color: Colors.black,
+                      )
+                    : Icon(Icons.favorite_border),
               ),
               IconButton(
                 splashColor: colors[cardColor],

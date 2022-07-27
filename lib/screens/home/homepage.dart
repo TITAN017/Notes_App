@@ -94,7 +94,7 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),*/
-            NotesList(),
+            NotesList(page: _bottomBarIndex),
         floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.yellow,
           elevation: 0,
@@ -117,7 +117,7 @@ class _HomePageState extends State<HomePage> {
             setState(() {
               _bottomBarIndex = index;
             });
-            //print(index);
+            print(index);
           },
           items: [
             BottomNavigationBarItem(

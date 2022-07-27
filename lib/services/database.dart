@@ -33,6 +33,7 @@ class Database {
       return Notes(
         info: e.get('info') ?? '',
         priority: e.get('priority') ?? 1,
+        fav: e.get('fav') ?? false,
         id: e.id,
       );
     }).toList();
@@ -56,6 +57,7 @@ class Database {
         {
           'info': info,
           'priority': priority,
+          'fav': false,
         },
       );
     } catch (e) {
@@ -73,6 +75,7 @@ class Database {
         {
           'info': info,
           'priority': priority,
+          'fav': false,
         },
       );
     } catch (e) {
@@ -84,7 +87,7 @@ class Database {
 
   Future modify(String docid, String info, int priority) async {
     try {
-      return await subref.doc(docid).set(
+      return await subref.doc(docid).update(
         {
           'info': info,
           'priority': priority,
@@ -92,6 +95,20 @@ class Database {
       );
     } catch (e) {
       print("Error occured : modify");
+      print(e.toString());
+      return null;
+    }
+  }
+
+  Future favourite(String docid, bool fav) async {
+    try {
+      return await subref.doc(docid).update(
+        {
+          'fav': fav,
+        },
+      );
+    } catch (e) {
+      print("Error Occured : fav");
       print(e.toString());
       return null;
     }
