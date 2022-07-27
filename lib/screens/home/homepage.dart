@@ -103,7 +103,9 @@ class _HomePageState extends State<HomePage> {
             style: TextStyle(fontSize: 25),
           ),
           onPressed: () {
-            act.showdisplay(context, db.add, 'Add', null);
+            _bottomBarIndex == 0
+                ? act.showdisplay(context, db.add, 'Add', null)
+                : act.cantDoThat(context, "Add");
           },
         ),
         bottomNavigationBar: BottomNavigationBar(
@@ -117,7 +119,6 @@ class _HomePageState extends State<HomePage> {
             setState(() {
               _bottomBarIndex = index;
             });
-            print(index);
           },
           items: [
             BottomNavigationBarItem(

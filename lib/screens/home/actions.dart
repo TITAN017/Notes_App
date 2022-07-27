@@ -17,6 +17,48 @@ class Act {
     }
   }
 
+  void cantDoThat(BuildContext context, String actiontype) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            "Alert",
+            style: GoogleFonts.acme(
+              letterSpacing: 1,
+            ),
+          ),
+          content: Text(
+            "Cant $actiontype note here!",
+            style: GoogleFonts.acme(
+              letterSpacing: 1,
+            ),
+          ),
+          actions: [
+            Center(
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  "OK",
+                  style: GoogleFonts.acme(
+                    letterSpacing: 1,
+                  ),
+                ),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(
+                    Colors.red,
+                  ),
+                ),
+              ),
+            )
+          ],
+        );
+      },
+    );
+  }
+
   void showdisplay(
       BuildContext context, Function action, String actionType, String? id) {
     final key = GlobalKey<FormState>();

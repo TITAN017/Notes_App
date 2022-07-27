@@ -85,7 +85,11 @@ class NoteCard extends StatelessWidget {
                 splashColor: colors[cardColor],
                 color: Colors.black,
                 onPressed: () async {
-                  await del(id);
+                  if (!fav) {
+                    await del(id);
+                  } else {
+                    act.cantDoThat(context, "Delete");
+                  }
                 },
                 icon: Icon(Icons.close),
               ),
