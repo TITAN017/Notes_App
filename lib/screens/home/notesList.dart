@@ -7,7 +7,8 @@ import 'package:notes/utils/note_card.dart';
 import 'package:provider/provider.dart';
 
 class NotesList extends StatefulWidget {
-  const NotesList({Key? key}) : super(key: key);
+  final int? page;
+  const NotesList({this.page});
 
   @override
   State<NotesList> createState() => _NotesListState();
@@ -26,12 +27,17 @@ class _NotesListState extends State<NotesList> {
         itemCount: notes.length,
         itemBuilder: (context, index) {
           var current = notes[index];
-          return NoteCard(
-            cardColor: current.priority,
-            info: current.info,
-            id: current.id,
-            del: db.delete,
-          );
+          return (widget.page == 0 || (widget.page != 0 && current.fav))
+              ? NoteCard(
+                  cardColor: current.priority,
+                  info: current.info,
+                  fav: current.fav,
+                  id: current.id,
+                  del: db.delete,
+                  mod: db.modify,
+                  changeFav: db.favourite,
+                )
+              : const SizedBox.shrink();
         },
       );
     } else {
