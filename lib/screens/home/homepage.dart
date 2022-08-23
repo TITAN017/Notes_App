@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:notes/models/notes.dart';
 import 'package:notes/screens/home/actions.dart';
 import 'package:notes/screens/home/notesList.dart';
+import 'package:notes/screens/home/notesListSide.dart';
 import 'package:notes/services/auth.dart';
 import 'package:notes/services/database.dart';
 import 'package:notes/utils/app_drawer.dart';
@@ -94,7 +95,9 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),*/
-            NotesList(page: _bottomBarIndex),
+            _bottomBarIndex == 2
+                ? NotesListSide()
+                : NotesList(page: _bottomBarIndex),
         floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.yellow,
           elevation: 0,
@@ -130,8 +133,8 @@ class _HomePageState extends State<HomePage> {
               label: 'Favourite',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: 'Settings',
+              icon: Icon(Icons.remove_red_eye),
+              label: 'View',
             ),
           ],
         ),

@@ -20,7 +20,7 @@ class AppDrawer extends StatelessWidget {
               height: 50,
               child: Center(
                 child: Text(
-                  'Drawer Test',
+                  'Welcome User!',
                   style: GoogleFonts.acme(
                     color: Colors.white,
                     fontSize: 18,
@@ -29,26 +29,9 @@ class AppDrawer extends StatelessWidget {
               ),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: Colors.black87,
+                color: Colors.black26,
               ),
             ),
-          ),
-          ListTile(
-            title: Text('Option 1'),
-            onTap: () {},
-            minVerticalPadding: 5,
-          ),
-          ListTile(
-            title: Text('Option 2'),
-            onTap: () {},
-          ),
-          ListTile(
-            title: Text('Option 3'),
-            onTap: () {},
-          ),
-          ListTile(
-            title: Text('Option 4'),
-            onTap: () {},
           ),
           SizedBox(
             height: 250,

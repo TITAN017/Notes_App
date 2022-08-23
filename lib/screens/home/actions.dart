@@ -107,7 +107,7 @@ class Act {
                       letterSpacing: 1,
                     ),
                     onChanged: (val) {
-                      print(val);
+                      //print(val);
                       priority = val;
                     },
                   ),
