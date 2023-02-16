@@ -34,7 +34,9 @@ class _SignInState extends State<SignIn> {
     return loading
         ? Loading()
         : Scaffold(
-            drawer: AppDrawer(),
+            drawer: AppDrawer(
+              type: true,
+            ),
             appBar: AppBar(
               centerTitle: true,
               title: Row(
@@ -191,7 +193,21 @@ class _SignInState extends State<SignIn> {
                 setState(() {
                   _bottomBarIndex = index;
                 });
-                //print(index);
+                if (index == 1) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        'This is a Dummy Tab :)',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  );
+                  setState(() {
+                    _bottomBarIndex = 0;
+                  });
+                }
               },
               items: [
                 BottomNavigationBarItem(
