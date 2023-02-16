@@ -7,6 +7,8 @@ import 'package:notes/services/auth.dart';
 // ignore_for_file: use_key_in_widget_constructors
 
 class AppDrawer extends StatelessWidget {
+  late bool type;
+  AppDrawer({this.type = false});
   final AuthService _auth = AuthService();
 
   @override
@@ -36,27 +38,38 @@ class AppDrawer extends StatelessWidget {
           SizedBox(
             height: 250,
           ),
-          ListTile(
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Logout',
-                  style: GoogleFonts.acme(
-                    fontSize: 22,
-                    color: Colors.amber,
+          !type
+              ? ListTile(
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Logout',
+                        style: GoogleFonts.acme(
+                          fontSize: 22,
+                          color: Colors.amber,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Icon(Icons.logout),
+                    ],
+                  ),
+                  onTap: () async {
+                    await _auth.signout();
+                  },
+                )
+              : Container(
+                  padding: EdgeInsets.all(10),
+                  child: Text(
+                    'This is ROG Notes, a single destination to store your precious notes!',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 2,
+                    ),
                   ),
                 ),
-                SizedBox(
-                  width: 10,
-                ),
-                Icon(Icons.logout),
-              ],
-            ),
-            onTap: () async {
-              await _auth.signout();
-            },
-          ),
         ],
       ),
     );
