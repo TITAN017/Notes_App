@@ -60,13 +60,22 @@ class AppDrawer extends StatelessWidget {
                     await _auth.signout();
                   },
                 )
-              : Container(
-                  padding: EdgeInsets.all(10),
-                  child: Text(
-                    'This is ROG Notes, a single destination to store your precious notes!',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 2,
+              : Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 20,
+                    ),
+                    decoration: BoxDecoration(
+                        color: Colors.black26,
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Text(
+                      'This is ROG Notes, a single destination to store your precious notes!',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 2,
+                      ),
                     ),
                   ),
                 ),
